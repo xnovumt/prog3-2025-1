@@ -10,10 +10,7 @@ export default class Mensaje extends BaseModel {
   public contenido: string
 
   @column()
-  public fecha: Date
-
-  @column()
-  public hora: string
+  public fecha: DateTime
 
   @column()
   public chat_id: number

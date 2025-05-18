@@ -28,7 +28,6 @@ export default class MensajesController {
       chat_id: mensaje.chat_id,
       user_id: mensaje.user_id,
       fecha: mensaje.fecha,
-      hora: mensaje.hora,
       emisor: {
         id: userData._id,
         name: userData.name,
@@ -40,7 +39,7 @@ export default class MensajesController {
   }
 
   public async create({ request, response }: HttpContextContract) {
-    const { contenido, chat_id, user_id, fecha, hora } = request.only([
+    const { contenido, chat_id, user_id, fecha} = request.only([
       'contenido',
       'chat_id',
       'user_id',
@@ -71,7 +70,7 @@ export default class MensajesController {
       }
       
     // Crear el mensaje
-    const mensaje = await Mensaje.create({ contenido, chat_id, user_id, fecha, hora })
+    const mensaje = await Mensaje.create({ contenido, chat_id, user_id, fecha})
 
     // Incluir el nombre del usuario en la respuesta
     return response.status(201).json({
@@ -80,7 +79,6 @@ export default class MensajesController {
       chat_id: mensaje.chat_id,
       user_id: mensaje.user_id,
       fecha: mensaje.fecha,
-      hora: mensaje.hora,
       emisor: {
         id: userData._id,
         name: userData.name,
@@ -112,7 +110,7 @@ export default class MensajesController {
       fecha: payload.fecha.toJSDate(),
       hora: payload.hora,
     }
-    theMensaje.merge(data)
+
     return await theMensaje.save()
   }
 

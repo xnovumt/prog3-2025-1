@@ -20,8 +20,8 @@ export default class PolizaValidator {
       ...Object.values(TipoPolizaOperario),
       ...Object.values(TipoPolizaMaquinaria)
     ] as const),
-    fechaInicio: schema.date(),
-    fechaFin: schema.date(),
+    fecha_inicio: schema.date(),
+    fecha_fin: schema.date(),
   })
 
   public messages: CustomMessages = {

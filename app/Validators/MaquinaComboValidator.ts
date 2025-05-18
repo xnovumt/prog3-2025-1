@@ -9,10 +9,6 @@ export default class MaquinaComboValidator {
       rules.required(),
       rules.exists({ table: 'maquinas', column: 'id' })
     ]),
-    combo_id: schema.number([
-      rules.required(),
-      rules.exists({ table: 'combos', column: 'id' })
-    ]),
     fecha_inicio: schema.date(),
     fecha_fin: schema.date({}, [
       rules.afterField('fecha_inicio')

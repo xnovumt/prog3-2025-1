@@ -20,7 +20,7 @@ const corsConfig: CorsConfig = {
   | you can define a function to enable/disable it on per request basis as well.
   |
   */
-  enabled: false,
+  enabled: true, // <--- CAMBIADO: Activa CORS
 
   // You can also use a function that return true or false.
   // enabled: (request) => request.url().startsWith('/api')
@@ -38,13 +38,16 @@ const corsConfig: CorsConfig = {
   | Boolean (true)    - Allow current request origin.
   | Boolean (false)   - Disallow all.
   | String            - Comma separated list of allowed origins.
-  | Array             - An array of allowed origins.
+  | Array             - An array of allowed origins. // <--- Usaremos un Array
   | String (*)        - A wildcard (*) to allow all request origins.
   | Function          - Receives the current origin string and should return
   |                     one of the above values.
   |
   */
-  origin: true,
+  origin: ['http://localhost:4200'], // <--- CAMBIADO: Permite explícitamente solo tu frontend en 4200
+  // También podrías usar '*' para permitir cualquier origen (útil en desarrollo, menos seguro en prod)
+  // origin: '*',
+
 
   /*
   |--------------------------------------------------------------------------
@@ -56,7 +59,7 @@ const corsConfig: CorsConfig = {
   |
   | Following is the list of default methods. Feel free to add more.
   */
-  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'], // Estos métodos suelen ser suficientes para un CRUD
 
   /*
   |--------------------------------------------------------------------------
@@ -68,14 +71,14 @@ const corsConfig: CorsConfig = {
   |
   | https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers
   |
-  | Boolean(true)     - Allow all headers mentioned in `Access-Control-Request-Headers`.
+  | Boolean(true)     - Allow all headers mentioned in `Access-Control-Request-Headers`. // <--- true es común en desarrollo para no listar manualmente
   | Boolean(false)    - Disallow all headers.
   | String            - Comma separated list of allowed headers.
   | Array             - An array of allowed headers.
   | Function          - Receives the current header and should return one of the above values.
   |
   */
-  headers: true,
+  headers: true, // Permitir todos los headers solicitados por el cliente (común en desarrollo)
 
   /*
   |--------------------------------------------------------------------------
@@ -104,7 +107,7 @@ const corsConfig: CorsConfig = {
     'expires',
     'last-modified',
     'pragma',
-  ],
+  ], // Por defecto, suele ser suficiente
 
   /*
   |--------------------------------------------------------------------------
@@ -117,7 +120,7 @@ const corsConfig: CorsConfig = {
   | https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
   |
   */
-  credentials: true,
+  credentials: true, // <--- Permitir envío de cookies/headers de auth
 
   /*
   |--------------------------------------------------------------------------
@@ -128,7 +131,7 @@ const corsConfig: CorsConfig = {
   | https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
   |
   */
-  maxAge: 90,
+  maxAge: 90, // Tiempo de caché para las respuestas de pre-vuelo (OPTIONS)
 }
 
 export default corsConfig
