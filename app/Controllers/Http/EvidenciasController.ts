@@ -40,7 +40,7 @@ export default class EvidenciasController {
 
     public async delete({ params, response }: HttpContextContract) {
         const theEvidencia: Evidencia = await Evidencia.findOrFail(params.id);
-            response.status(204);
-            return await theEvidencia.delete();
+        response.status(204);
+        return await theEvidencia.delete();
     }
 }

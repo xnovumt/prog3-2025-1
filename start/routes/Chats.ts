@@ -1,8 +1,10 @@
 import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
-    Route.get("/chats", "ChatsController.find");
+    // filepath: c:\Users\sergi\Desktop\ms-negocio 3\ms-negocio\start\routes.ts
+    Route.get('/chats', 'ChatsController.index');// Listar todos los chats
     Route.get("/chats/:id", "ChatsController.find");
-    Route.post("/chats", "ChatsController.create");
-    Route.put("/chats/:id", "ChatsController.update");
-    Route.delete("/chats/:id", "ChatsController.delete");
+    Route.post('/chats', 'ChatsController.create'); // Crear un chat
+    Route.put('/chats/:id', 'ChatsController.update'); // Actualizar un chat
+    Route.delete('/chats/:id', 'ChatsController.delete'); // Eliminar un chat
+
 });

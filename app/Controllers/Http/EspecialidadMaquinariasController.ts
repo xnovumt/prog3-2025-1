@@ -18,6 +18,7 @@ export default class EspecialidadMaquinariasController {
             }
         }
     }
+
     public async create({ request }: HttpContextContract) {
         const payload = await request.validate(EspecialidadMaquinariaValidator)
         const especialidadMaquinaria = await EspecialidadMaquinaria.create(payload)
@@ -27,8 +28,9 @@ export default class EspecialidadMaquinariasController {
     public async update({ params, request }: HttpContextContract) {
         const especialidadMaquinaria = await EspecialidadMaquinaria.findOrFail(params.id)
         const payload = await request.validate(EspecialidadMaquinariaValidator)
-        especialidadMaquinaria.especialidad_id = payload.especialidad_id
+        especialidadMaquinaria.tipo_servicio_id = payload.tipo_servicio_id
         especialidadMaquinaria.maquina_id = payload.maquina_id
+        especialidadMaquinaria.especialidad_id = payload.especialidad_id // Actualización del nuevo campo
         especialidadMaquinaria.tipo_trabajo = payload.tipo_trabajo
         return await especialidadMaquinaria.save()
     }
