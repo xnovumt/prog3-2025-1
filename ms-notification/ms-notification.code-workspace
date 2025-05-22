@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "ms-notification",
+			"path": "."
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
