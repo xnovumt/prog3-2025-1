@@ -104,4 +104,4 @@ def charge():
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True) # Modifiqué la línea app.run

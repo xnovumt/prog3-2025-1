@@ -1,0 +1,20 @@
+# Utiliza una imagen base oficial de Python
+FROM python:3.9-slim-buster
+
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copia el archivo de requisitos
+COPY requirements.txt .
+
+# Instala las dependencias
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia el código fuente de la aplicación (incluyendo el archivo .env si está en el mismo directorio)
+COPY . .
+
+# Expone el puerto en el que la aplicación de pagos escucha
+EXPOSE 5001
+
+# Define el comando para ejecutar la aplicación
+CMD ["python", "app.py"]
