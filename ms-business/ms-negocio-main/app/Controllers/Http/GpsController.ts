@@ -23,22 +23,28 @@ export default class GpsController {
 
     public async create({ request }: HttpContextContract) {
         const payload = await request.validate(GpValidator);
-        const theGp: Gp = await Gp.create(payload);
+        // Asegúrate de que payload.latitud y payload.longitud sean strings
+        const theGp: Gp = await Gp.create({
+            maquina_id: payload.maquina_id,
+            latitud: String(payload.latitud),
+            longitud: String(payload.longitud),
+        });
         return theGp;
     }
 
     public async update({ params, request }: HttpContextContract) {
         const theGp: Gp = await Gp.findOrFail(params.id);
         const payload = await request.validate(GpValidator);
-        theGp.latitud = payload.latitud;
-        theGp.longitud = payload.longitud;
+        // Asegúrate de asignar strings a theGp.latitud y theGp.longitud
+        theGp.latitud = String(payload.latitud);
+        theGp.longitud = String(payload.longitud);
         theGp.maquina_id = payload.maquina_id;
         return await theGp.save();
     }
 
     public async delete({ params, response }: HttpContextContract) {
         const theGp: Gp = await Gp.findOrFail(params.id);
-            response.status(204);
-            return await theGp.delete();
+        response.status(204);
+        return await theGp.delete();
     }
 }

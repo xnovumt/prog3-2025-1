@@ -2,8 +2,9 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Cuota from 'App/Models/Cuota';
 import CuotaValidator from 'App/Validators/CuotaValidator';
 import PaymentService from 'App/Services/PaymentService';
-import axios from 'axios';
-import Env from '@ioc:Adonis/Core/Env'
+// Eliminar importaciones no utilizadas
+// import axios from 'axios';
+// import Env from '@ioc:Adonis/Core/Env'
 
 export default class CuotasController {
     public async find({ request, params }: HttpContextContract) {

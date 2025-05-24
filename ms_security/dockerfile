@@ -1,0 +1,33 @@
+# Utiliza una imagen base de Maven para construir la aplicación con JDK 21.
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
+
+# Establece el directorio de trabajo dentro del contenedor.
+WORKDIR /app
+
+# Copia los archivos de construcción de Maven.
+COPY pom.xml .
+COPY .mvn ./.mvn
+
+# Copia el código fuente.
+COPY src ./src
+
+# Construye la aplicación Spring Boot utilizando Maven.
+RUN mvn clean package -DskipTests
+
+# --- Fase para la imagen final (más pequeña) ---
+# Utiliza una imagen base JRE delgada con una versión de Java compatible.
+# Aquí asumimos que la versión 25 de openjdk es compatible con lo construido con JDK 21.
+# Si encuentras problemas, podrías intentar una etiqueta '-jre' más genérica para la versión 21.
+FROM openjdk:25-slim-bookworm
+
+# Establece el directorio de trabajo para la aplicación.
+WORKDIR /app
+
+# Copia solo el JAR ejecutable desde la fase de construcción.
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expone el puerto en el que tu aplicación Spring Boot escucha (generalmente 8081).
+EXPOSE 8081
+
+# Define el comando para ejecutar la aplicación Spring Boot.
+ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -19,7 +19,7 @@ const databaseConfig: DatabaseConfig = {
   | file.
   |
   */
-  connection: Env.get('DB_CONNECTION'),
+  connection: Env.get('DB_CONNECTION', 'mysql'), // Added a default value 'mysql'
 
   connections: {
     /*
@@ -36,11 +36,11 @@ const databaseConfig: DatabaseConfig = {
     mysql: {
       client: 'mysql2',
       connection: {
-        host: Env.get('MYSQL_HOST'),
-        port: Env.get('MYSQL_PORT'),
-        user: Env.get('MYSQL_USER'),
-        password: Env.get('MYSQL_PASSWORD', ''),
-        database: Env.get('MYSQL_DB_NAME'),
+        host: Env.get('DB_HOST', '127.0.0.1'), // Added a default value
+        port: Env.get('DB_PORT') ? Env.get('DB_PORT') : 3306, // Simplified port retrieval with default
+        user: Env.get('DB_USER', 'root'), // Added a default value
+        password: Env.get('DB_PASSWORD', ''),
+        database: Env.get('DB_DATABASE', 'mydb'), // Added a default value
       },
       migrations: {
         naturalSort: true,

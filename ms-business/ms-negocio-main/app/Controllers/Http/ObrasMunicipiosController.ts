@@ -25,7 +25,8 @@ export default class ObrasMunicipiosController {
         const payload = await request.validate(ObraMunicipioValidator);
         const theObraMunicipio: ObraMunicipio = await ObraMunicipio.create({
             obra_id: payload.obra_id,
-            municipio_id: payload.municipio_id
+            // Asegúrate de que payload.municipio_id sea un number
+            municipio_id: Number(payload.municipio_id)
         });
         return theObraMunicipio;
     }
@@ -34,13 +35,14 @@ export default class ObrasMunicipiosController {
         const theObraMunicipio: ObraMunicipio = await ObraMunicipio.findOrFail(params.id);
         const payload = await request.validate(ObraMunicipioValidator);
         theObraMunicipio.obra_id = payload.obra_id;
-        theObraMunicipio.municipio_id = payload.municipio_id;
+        // Asegúrate de asignar un number a theObraMunicipio.municipio_id
+        theObraMunicipio.municipio_id = Number(payload.municipio_id);
         return await theObraMunicipio.save();
     }
 
     public async delete({ params, response }: HttpContextContract) {
         const theObraMunicipio: ObraMunicipio = await ObraMunicipio.findOrFail(params.id);
-            response.status(204);
-            return await theObraMunicipio.delete();
+        response.status(204);
+        return await theObraMunicipio.delete();
     }
 }

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Novedad from 'App/Models/Novedad'
 
 export default class Turno extends BaseModel {

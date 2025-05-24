@@ -1,6 +1,6 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { DateTime } from 'luxon'
+
 
 export default class TurnoValidator {
   constructor(protected ctx: HttpContextContract) {}

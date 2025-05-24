@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+  ms-negocio:
+    build:
+      context: ./ms-business/ms-negocio-main
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3333"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      APP_KEY: GTs_pMakZaAEC4kL7695m8KMyMADaKaf
+      DB_HOST: mysql
+      DB_USER: admin
+      DB_PASSWORD: admin
+      MYSQL_DB_NAME: main
+      MS_SECURITY: http://ms-security:8080
+      DB_PORT: 3306
+      DB_CONNECTION: mysql
+      PORT: 3333
+      DRIVE_DISK: local
+    depends_on:
+      - mysql
+      - ms-security
+    networks:
+      - app-network
+    restart: "no"
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: main
+    ports:
+      - "9876:3306"
+    networks:
+      - app-network
+
+  ms-security:
+    build:
+      context: ./ms_security
+      dockerfile: Dockerfile
+    ports:
+      - "7777:8081" # Cambié el puerto del host para que coincida con EXPOSE del Dockerfile
+    environment:
+      # ... (tus variables de entorno para ms-security)
+      DUMMY_VAR: dummy_value
+    networks:
+      - app-network
+
+  payment:
+    build:
+      context: ./ms-payment
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      PUBLIC_KEY: "${PUBLIC_KEY}"
+      PRIVATE_KEY: "${PRIVATE_KEY}"
+      NOTIFICATION_SERVICE_URL: "${NOTIFICATION_SERVICE_URL}"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
