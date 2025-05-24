@@ -3,22 +3,15 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --force
+RUN rm -rf node_modules
 COPY . .
+RUN npm install --force
 RUN npm run build
 
-# Stage 2: Runner
+# Stage 2: Runner (simplificado)
 FROM node:20-alpine
 WORKDIR /app
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-# No necesitamos copiar 'start', 'config', etc. individualmente ya que 'build' contiene todo lo necesario
-# COPY --from=builder /app/start ./start
-# COPY --from=builder /app/config ./config
-# COPY --from=builder /app/providers ./providers
-# COPY --from=builder /app/contracts ./contracts
-# COPY --from=builder /app/database ./database
-# COPY --from=builder /app/server.js /app/server.js
+COPY --from=builder /app ./
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
@@ -26,9 +19,9 @@ ENV APP_KEY=GTs_pMakZaAEC4kL7695m8KMyMADaKaf
 ENV DB_HOST=mysql
 ENV DB_USER=admin
 ENV DB_PASSWORD=admin
-ENV MYSQL_DB_NAME=main
+ENV DB_DATABASE=main 
 ENV MS_SECURITY=http://ms-security:8080
 ENV DB_PORT=3306
 ENV DB_CONNECTION=mysql
 
-CMD ["node", "build/server.js"] 
+CMD ["node", "build/server.js"]

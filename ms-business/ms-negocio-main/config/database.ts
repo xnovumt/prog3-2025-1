@@ -40,7 +40,7 @@ const databaseConfig: DatabaseConfig = {
         port: Env.get('DB_PORT') ? Env.get('DB_PORT') : 3306, // Simplified port retrieval with default
         user: Env.get('DB_USER', 'root'), // Added a default value
         password: Env.get('DB_PASSWORD', ''),
-        database: Env.get('DB_DATABASE', 'mydb'), // Added a default value
+        database: Env.get('DB_DATABASE', 'main'), // Added a default value
       },
       migrations: {
         naturalSort: true,

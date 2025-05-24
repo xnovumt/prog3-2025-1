@@ -65,6 +65,18 @@ services:
     networks:
       - app-network
 
+  frontend: # Nombre del servicio para tu frontend Angular
+    build:
+      context: ./angular/angular # Reemplaza con la ruta al directorio raíz de tu proyecto Angular
+      dockerfile: Dockerfile # Asegúrate de que tu Dockerfile para Angular esté aquí
+    ports:
+      - "80:80" # Mapea el puerto 80 de tu contenedor Angular al puerto 80 de tu host (puedes cambiar el puerto del host si lo necesitas)
+    networks:
+      - app-network
+    depends_on:
+      - ms-negocio # Indica que el frontend depende del backend
+    restart: "no"
+
 networks:
   app-network:
     driver: bridge
