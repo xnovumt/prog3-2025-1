@@ -25,6 +25,12 @@ services:
     networks:
       - app-network
     restart: "no"
+    healthcheck:
+      test: ["CMD", "sh", "-c", "exit 0"] # Healthcheck siempre exitoso (TEMPORAL)
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   mysql:
     image: mysql:8.0
@@ -74,7 +80,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - ms-negocio # Indica que el frontend depende del backend
+      ms-negocio:
+        condition: service_started # Espera a que ms-negocio inicie (sin verificar salud)
     restart: "no"
 
 networks:

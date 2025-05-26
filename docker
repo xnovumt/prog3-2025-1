@@ -1,0 +1,4 @@
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+     2021       1    2021      18836  cons0     197609 18:12:37 /usr/bin/bash
+     2080    2021    2080       7884  cons0     197609 18:14:55 /usr/bin/PS
+     2081    2021    2080      19992  cons0     197609 18:14:55 /usr/bin/bash

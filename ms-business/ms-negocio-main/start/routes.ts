@@ -55,3 +55,4 @@ import './routes/GobernantesDepartamentos'
 import './routes/GobernantesMunicipios'
 import './routes/Seguros'
 import './routes/Novedades'
+Route.get('/health', 'HealthCheckController.index')
