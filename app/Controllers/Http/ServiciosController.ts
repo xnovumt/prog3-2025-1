@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Servicio from 'App/Models/Servicio';
 import ServicioValidator from 'App/Validators/ServicioValidator';
+import Ws from 'App/Services/Ws';
 
 export default class ServiciosController {
     public async find({ request, params }: HttpContextContract) {
@@ -43,5 +44,9 @@ export default class ServiciosController {
         const theServicio: Servicio = await Servicio.findOrFail(params.id);
         response.status(204);
         return await theServicio.delete();
+    }
+    public async sendMessage({ request }: HttpContextContract) {
+        Ws.io.emit('notifications', { message: 'Nueva Notificación' })
+        return { message: 'Mensaje enviado a todos los clientes conectados' };
     }
 }

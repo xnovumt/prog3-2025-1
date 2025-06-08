@@ -7,4 +7,3 @@ Route.group(() => {
     Route.put("/operarios/:id", "OperariosController.update");
     Route.delete("/operarios/:id", "OperariosController.delete");
 })
-.middleware('MsSecMid') 

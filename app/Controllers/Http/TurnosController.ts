@@ -25,8 +25,7 @@ export default class TurnosController {
     public async create({ request }: HttpContextContract) {
         const payload = await request.validate(TurnoValidator)
         const theTurno: Turno = await Turno.create({
-            fecha: payload.fecha,
-            hora: DateTime.fromFormat(payload.hora, 'HH:mm:ss'),
+            fecha_hora: DateTime.fromISO(payload.fecha_hora),
             operario_id: payload.operario_id,
             maquina_id: payload.maquina_id
         })
@@ -36,8 +35,7 @@ export default class TurnosController {
     public async update({ params, request }: HttpContextContract) {
         const theTurno: Turno = await Turno.findOrFail(params.id)
         const payload = await request.validate(TurnoValidator)
-        theTurno.fecha = payload.fecha
-        theTurno.hora = DateTime.fromFormat(payload.hora, 'HH:mm:ss')
+        theTurno.fecha_hora = DateTime.fromISO(payload.fecha_hora)
         theTurno.operario_id = payload.operario_id
         theTurno.maquina_id = payload.maquina_id
         return await theTurno.save()

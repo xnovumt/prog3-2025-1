@@ -6,11 +6,8 @@ export default class Turno extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column.dateTime() 
-  public fecha: DateTime
-
   @column.dateTime()
-  public hora: DateTime
+  public fecha_hora: DateTime
 
   @column()
   public operario_id: number
@@ -25,7 +22,7 @@ export default class Turno extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => Novedad,{
+  @hasMany(() => Novedad, {
     foreignKey: 'turno_id',
   })
   public novedades: HasMany<typeof Novedad>

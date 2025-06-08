@@ -50,8 +50,8 @@ export default class PolizasController {
       maquina_id: body.maquina_id || null,
       operario_id: body.operario_id || null,
       tipo_poliza: body.tipo_poliza,
-      fechaInicio: body.fechaInicio,
-      fechaFin: body.fechaFin,
+      fecha_inicio: body.fecha_inicio,
+      fecha_fin: body.fecha_fin,
     })
 
     return thePoliza
@@ -88,8 +88,8 @@ export default class PolizasController {
     thePoliza.maquina_id = body.maquina_id || null
     thePoliza.operario_id = body.operario_id || null
     thePoliza.tipo_poliza = body.tipo_poliza
-    thePoliza.fechaInicio = body.fechaInicio
-    thePoliza.fechaFin = body.fechaFin
+    thePoliza.fecha_inicio = body.fecha_inicio
+    thePoliza.fecha_fin = body.fecha_fin
 
     await thePoliza.save()
 

@@ -1,5 +1,6 @@
 import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
+    Route.get("/servicios/send-message", "ServiciosController.sendMessage");
     Route.get("/servicios", "ServiciosController.find");
     Route.get("/servicios/:id", "ServiciosController.find");
     Route.post("/servicios", "ServiciosController.create");

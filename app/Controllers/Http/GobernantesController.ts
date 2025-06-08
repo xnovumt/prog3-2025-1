@@ -17,23 +17,22 @@ export default class GobernantesController {
     ])
 
     // Verificar si el usuario existe en ms-security
-    try {
-      await axios.get(`${Env.get('MS_SECURITY')}/api/users/${user_id}`, {
-        headers: { Authorization: request.header('Authorization') },
-      })
-    } catch (error) {
-      return response.status(404).send({
-        message: 'El usuario no existe en ms-security',
-        error: error.response?.data || error.message,
-      })
-    }
+    // try {
+    //   await axios.get(`${Env.get('MS_SECURITY')}/api/users/${user_id}`, {
+    //     headers: { Authorization: request.header('Authorization') },
+    //   })
+    // } catch (error) {
+    //   return response.status(404).send({
+    //     message: 'El usuario no existe en ms-security',
+    //     error: error.response?.data || error.message,
+    //   })
+    // }
 
     // Crear el gobernante
     const gobernante = await Gobernante.create({ user_id, periodoInit, periodoEnd })
 
     // Asignar territorio
     if (tipo === 'departamento') {
-      // Verificar si ya tiene municipios asignados activamente (XOR)
       const municipiosActivos = await GobernanteMunicipio.query()
         .where('gobernante_id', gobernante.id)
         .where('fecha_fin', '>=', DateTime.now().toSQL())
@@ -45,7 +44,6 @@ export default class GobernantesController {
         })
       }
 
-      // Crear asignación en la tabla intermedia
       await GobernanteDepartamento.create({
         gobernante_id: gobernante.id,
         departamento_id: territorio.departamento_id,
@@ -53,7 +51,6 @@ export default class GobernantesController {
         fecha_fin: periodoEnd,
       })
     } else if (tipo === 'municipio') {
-      // Verificar si ya tiene departamentos asignados activamente (XOR)
       const departamentosActivos = await GobernanteDepartamento.query()
         .where('gobernante_id', gobernante.id)
         .where('fecha_fin', '>=', DateTime.now().toSQL())
@@ -65,7 +62,6 @@ export default class GobernantesController {
         })
       }
 
-      // Crear asignación en la tabla intermedia
       await GobernanteMunicipio.create({
         gobernante_id: gobernante.id,
         municipio_id: territorio.municipio_id,
@@ -82,62 +78,61 @@ export default class GobernantesController {
   public async find({ request, params, response }: HttpContextContract) {
     try {
       if (params.id) {
-        // Buscar un gobernante específico por ID
         const gobernante = await Gobernante.query()
           .where('id', params.id)
           .preload('departamentos', (query) => {
-            query.pivotColumns(['fecha_inicio', 'fecha_fin']);
+            query.pivotColumns(['fecha_inicio', 'fecha_fin'])
           })
           .preload('municipios', (query) => {
-            query.pivotColumns(['fecha_inicio', 'fecha_fin']);
+            query.pivotColumns(['fecha_inicio', 'fecha_fin'])
           })
-          .firstOrFail();
+          .firstOrFail()
 
-        const userResponse = await axios.get(`${Env.get('MS_SECURITY')}/api/users/${gobernante.user_id}`);
-        const {_id, name, email} = userResponse.data;  
-  
+        // Verificar si el usuario existe en ms-security
+        // const userResponse = await axios.get(`${Env.get('MS_SECURITY')}/api/users/${gobernante.user_id}`)
+        // const { _id, name, email } = userResponse.data
+
         return response.ok({
-            id: gobernante.id,
-            user: {id: _id, name, email}, // Información del usuario
-            periodo_init: gobernante.periodoInit,
-            periodo_end: gobernante.periodoEnd,
-            departamentos: gobernante.departamentos,
-            municipios: gobernante.municipios
-        });
+          id: gobernante.id,
+          // user: { id: _id, name, email }, // Información del usuario
+          periodo_init: gobernante.periodoInit,
+          periodo_end: gobernante.periodoEnd,
+          departamentos: gobernante.departamentos,
+          municipios: gobernante.municipios,
+        })
       } else {
-
         const gobernantes = await Gobernante.query()
           .preload('departamentos', (query) => {
-            query.pivotColumns(['fecha_inicio', 'fecha_fin']);
+            query.pivotColumns(['fecha_inicio', 'fecha_fin'])
           })
           .preload('municipios', (query) => {
-            query.pivotColumns(['fecha_inicio', 'fecha_fin']);
-          });
+            query.pivotColumns(['fecha_inicio', 'fecha_fin'])
+          })
 
         const gobernantesWithUserData = await Promise.all(
           gobernantes.map(async (gobernante) => {
-            const userResponse = await axios.get(`${Env.get('MS_SECURITY')}/api/users/${gobernante.user_id}`);
-            const {_id, name, email} = userResponse.data; // Filtrar solo los campos necesarios
+            // const userResponse = await axios.get(`${Env.get('MS_SECURITY')}/api/users/${gobernante.user_id}`)
+            // const { _id, name, email } = userResponse.data // Filtrar solo los campos necesarios
 
             return {
               id: gobernante.id,
-              user: {id: _id, name, email}, // Información del usuario
+              // user: { id: _id, name, email }, // Información del usuario
               periodo_init: gobernante.periodoInit,
               periodo_end: gobernante.periodoEnd,
               departamentos: gobernante.departamentos,
-              municipios: gobernante.municipios
-            };
+              municipios: gobernante.municipios,
+            }
           })
-        );
-  
-        return response.ok(gobernantesWithUserData);
+        )
+
+        return response.ok(gobernantesWithUserData)
       }
     } catch (error) {
-      console.error('Error al listar gobernantes:', error.message);
+      console.error('Error al listar gobernantes:', error.message)
       return response.internalServerError({
         message: 'Error al listar gobernantes.',
         error: error.message,
-      });
+      })
     }
   }
 }

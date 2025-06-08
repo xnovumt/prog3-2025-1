@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany, BelongsTo, belongsTo, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Obra from './Obra'
+import Servicio from './Servicio'
+import Maquina from './Maquina'
 
 export default class Combo extends BaseModel {
   @column({ isPrimary: true })
@@ -18,5 +20,19 @@ export default class Combo extends BaseModel {
   @hasMany(() => Obra, {
     foreignKey: 'combo_id',
   })
-  public obras: HasMany <typeof Obra>
+  public obras: HasMany<typeof Obra>
+
+  @belongsTo(() => Servicio, {
+    foreignKey: 'servicio_id',
+  })
+  public servicio: BelongsTo<typeof Servicio>
+
+  @manyToMany(() => Maquina, {
+    pivotTable: 'maquina_combos',
+    localKey: 'id',
+    pivotForeignKey: 'combo_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'maquina_id',
+  })
+  public maquinas: ManyToMany<typeof Maquina>
 }
